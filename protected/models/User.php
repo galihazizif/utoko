@@ -17,6 +17,12 @@
  */
 class User extends CActiveRecord
 {
+
+	public $confirmPassword;
+	public $confirmEmail;
+	public $verifyCode;
+	public $provinsi,$kabupaten,$kecamatan;
+
 	/**
 	 * @return string the associated database table name
 	 */
@@ -33,12 +39,17 @@ class User extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('user_email, user_password, user_telepon', 'required'),
+			array('user_email, user_password, user_telepon, kecamatan, kabupaten, provinsi', 'required'),
+			array('user_email','email'),
+			array('user_email','unique','message'=>'Email sudah terpakai, silahkan gunakan yang lain.'),
+			array('confirmEmail','compare','compareAttribute'=>'user_email'),
+			array('confirmPassword','compare','compareAttribute'=>'user_password'),
 			array('user_status', 'numerical', 'integerOnly'=>true),
-			array('user_email, user_password', 'length', 'max'=>45),
+			array('user_email,user_nama, user_password', 'length', 'max'=>45),
 			array('user_tipe', 'length', 'max'=>1),
 			array('user_alamat', 'length', 'max'=>70),
 			array('user_telepon', 'length', 'max'=>14),
+			array('verifyCode','captcha','allowEmpty'=>!CCaptcha::checkRequirements()),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
 			array('user_id, user_email, user_password, user_tipe, user_alamat, user_telepon, user_status', 'safe', 'on'=>'search'),
@@ -63,13 +74,18 @@ class User extends CActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'user_id' => 'User',
-			'user_email' => 'User Email',
-			'user_password' => 'User Password',
-			'user_tipe' => 'User Tipe',
-			'user_alamat' => 'User Alamat',
-			'user_telepon' => 'User Telepon',
-			'user_status' => 'User Status',
+			'user_id' => 'ID',
+			'user_email' => 'Email',
+			'user_password' => 'Password',
+			'user_tipe' => 'Tipe',
+			'user_alamat' => 'Alamat',
+			'user_telepon' => 'Telepon',
+			'user_status' => 'Status',
+			'confirmEmail'=>'Konfirmasi Email',
+			'confirmPassword'=>'Konfirmasi Password',
+			'user_nama'=>'Nama Lengkap',
+			'user_lokasi'=>'Lokasi',
+			'verifyCode'=>'Captcha',
 		);
 	}
 

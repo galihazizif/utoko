@@ -57,7 +57,7 @@ class Produk extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('produk_nama, produk_deskripsi, produk_harga, produk_satuan, produk_allowcomment', 'required'),
-			array('produk_kategori, produk_qty, produk_status, produk_allowcomment', 'numerical', 'integerOnly'=>true),
+			array('produk_kategori, produk_qty, produk_status, produk_harga, produk_allowcomment', 'numerical', 'integerOnly'=>true),
 			array('produk_nama', 'length', 'max'=>70),
 			array('produk_deskripsi', 'length', 'max'=>700),
 			array('produk_harga', 'length', 'max'=>10),

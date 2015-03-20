@@ -24,6 +24,9 @@ class Keranjang extends CActiveRecord
 		return 'keranjang';
 	}
 
+	const STATUS_ADDED = 0;
+	const STATUS_PROCESSED = 1;
+
 	/**
 	 * @return array validation rules for model attributes.
 	 */
@@ -32,7 +35,7 @@ class Keranjang extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('keranjang_sessid, keranjang_produk, keranjang_qty, keranjang_tanggal, keranjang_status', 'required'),
+			array('keranjang_produk, keranjang_qty', 'required'),
 			array('keranjang_produk, keranjang_qty, keranjang_status', 'numerical', 'integerOnly'=>true),
 			array('keranjang_sessid', 'length', 'max'=>50),
 			// The following rule is used by search().

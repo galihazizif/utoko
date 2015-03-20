@@ -3,13 +3,11 @@
 /* @var $model Kategoriproduk */
 
 $this->breadcrumbs=array(
-	'Kategoriproduks'=>array('index'),
-	'Manage',
+	'Kelola Kategori Produk',
 );
 
 $this->menu=array(
-	array('label'=>'List Kategoriproduk', 'url'=>array('index')),
-	array('label'=>'Create Kategoriproduk', 'url'=>array('create')),
+	array('label'=>'Tambah Kategori', 'url'=>array('create')),
 );
 ?>
 

@@ -44,6 +44,31 @@
 	-ms-border-radius: 4px 4px 4px 4px;
 }
 
+#visitorsidebar{
+	background-color: transparent;
+	background: rgba(255,255,255,0.5);
+	border-right: 4px solid blue;
+	border-top: 4px solid blue;
+}
+
+#visitorsidebar li a{
+	color: rgba(0,0,0,0.5)
+}
+
+#visitorsidebar .active{
+	background: rgba(150,150,150,0.7);
+
+}
+
+#visitorsidebar .active a{
+	color:white;
+
+}
+
+.error{
+	
+}
+
 body{
 	background: url('../../data/static/dark.png'); background-repeat: repeat;
 }
@@ -64,8 +89,10 @@ body{
 }
 
 .logo{
-	width: 150px;
-	height: 150px;
+	/*width: 150px;
+	height: 150px;*/
+	border: none;
+	padding: 0;
 	margin: 0 10px 10px 0;
 }
 
@@ -82,6 +109,26 @@ body{
 	text-align: justify;
 }
 
+.align-right{
+	text-align: right;
+}
+
+
 .footer{
 	border-top: 5px solid orange;
 }
+
+#notif{
+			min-width: 250px;
+			max-width: 350px;
+			min-height: 50px;
+			position: fixed;
+			top: 10px;
+			right: 25px;
+			z-index: 1030;
+			background: rgba(50,50,50,0.9);
+			padding: 5px;
+			color: white;
+			border: solid 3px gray;
+
+		}

@@ -8,6 +8,25 @@ body {
   background: url('../../data/static/dark.png'); background-repeat: repeat;  
 }
 
+#iframe{
+  width: 1024px;
+  height: 768px;
+  -ms-zoom: 0.45;
+  -moz-transform: scale(0.45);
+  -moz-transform-origin: 0 0;
+  -o-transform: scale(0.45);
+  -o-transform-origin: 0 0;
+  -webkit-transform: scale(0.45);
+  -webkit-transform-origin: 0 0;
+  pointer-events: none;
+  border: solid 5px gray;
+
+}
+
+.align-right{
+  text-align: right;
+}
+
 
 /*
  * Global add-ons
@@ -53,6 +72,44 @@ body {
 
   .footer{
     border-top: 3px solid orange;
+  }
+
+  .msg-list-container{
+    border: solid 1px #b4b4b4;
+    height: 400px;
+    overflow-y: scroll;
+  }
+
+  .msg-list-item{
+    height: 45px;
+    background: #e3e3e3;
+    border-bottom: solid #ddd0d0 1px;
+  }
+
+  .msg-list-item p{
+    padding: 3px;
+  }
+
+  .read{
+    background: #ffffff;
+  }
+
+  .msg-list-container .active{
+      background: #4c8ccc;
+      color: white;
+  }
+
+  .msg-list-item:hover{
+    cursor: pointer;
+    color: white;
+    background: #4c85c3;
+  }
+
+  .msg-viewer{
+    height: 400px;
+    border: solid 1px #b4b4b4;
+    background: #ffffff;
+    overflow-y: auto;
   }
 
 /*

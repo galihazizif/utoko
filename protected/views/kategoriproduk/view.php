@@ -1,27 +1,25 @@
 <?php
-/* @var $this KategoriprodukController */
-/* @var $model Kategoriproduk */
+/* @var $this ProdukController */
+/* @var $model Produk */
 
 $this->breadcrumbs=array(
-	'Kategoriproduks'=>array('index'),
-	$model->katp_id,
+	'Kategori Produk'=>array('admin'),
+	$model->katp_nama,
 );
 
 $this->menu=array(
-	array('label'=>'List Kategoriproduk', 'url'=>array('index')),
-	array('label'=>'Create Kategoriproduk', 'url'=>array('create')),
-	array('label'=>'Update Kategoriproduk', 'url'=>array('update', 'id'=>$model->katp_id)),
-	array('label'=>'Delete Kategoriproduk', 'url'=>'#', 'linkOptions'=>array('submit'=>array('delete','id'=>$model->katp_id),'confirm'=>'Are you sure you want to delete this item?')),
-	array('label'=>'Manage Kategoriproduk', 'url'=>array('admin')),
+	array('label'=>'Tambah Kategori', 'url'=>array('create')),
+	array('label'=>'Hapus Kategori', 'url'=>'#', 'linkOptions'=>array('submit'=>array('delete','id'=>$model->katp_id),'confirm'=>'Are you sure you want to delete this item?')),
+	array('label'=>'Kelola Kategori', 'url'=>array('admin')),
 );
 ?>
 
-<h1>View Kategoriproduk #<?php echo $model->katp_id; ?></h1>
-
-<?php $this->widget('zii.widgets.CDetailView', array(
-	'data'=>$model,
-	'attributes'=>array(
-		'katp_id',
-		'katp_nama',
-	),
-)); ?>
+<div class="col-md-6">
+<div class="media">
+  <div class="media-body">
+    <p><?php echo $model->katp_nama;?></p>
+    <a class="btn btn-warning btn-sm" href="<?php echo $this->createUrl('kategoriproduk/update',array('id'=>$model->katp_id));?>">Sunting</a>
+    <a class="btn delete btn-danger btn-sm" href="<?php echo $this->createUrl('kategoriproduk/delete',array('id'=>$model->katp_id));?>">Hapus</a>
+  </div>
+</div>
+</div>

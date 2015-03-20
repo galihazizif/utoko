@@ -3,13 +3,12 @@
 /* @var $model Produk */
 
 $this->breadcrumbs=array(
-	'Produks'=>array('index'),
-	'Create',
+	'Kelola Produk'=>array('admin'),
+	'Tambah',
 );
 
 $this->menu=array(
-	array('label'=>'List Produk', 'url'=>array('index')),
-	array('label'=>'Manage Produk', 'url'=>array('admin')),
+	array('label'=>'Kelola Produk', 'url'=>array('admin')),
 );
 ?>
 

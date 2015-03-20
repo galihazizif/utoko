@@ -11,7 +11,8 @@ class SiteController extends Controller
 			// captcha action renders the CAPTCHA image displayed on the contact page
 			'captcha'=>array(
 				'class'=>'CCaptchaAction',
-				'backColor'=>0xFFFF00,
+				'backColor'=>0xFFFFFF,
+				'testLimit'=>1,
 			),
 			// page action renders "static" pages stored under 'protected/views/site/pages'
 			// They can be accessed via: index.php?r=site/page&view=FileName
@@ -25,11 +26,36 @@ class SiteController extends Controller
 	 * This is the default 'index' action that is invoked
 	 * when an action is not explicitly requested by users.
 	 */
-	public function actionIndex()
+	public function actionRegistrasi()
 	{
 		// renders the view file 'protected/views/site/index.php'
 		// using the default layout 'protected/views/layouts/main.php'
-		$this->render('index');
+		$model = new User;
+		if(isset($_POST['User'])){
+			$model->attributes = $_POST['User'];
+			$model->user_lokasi = $_POST['User']['kecamatan'];
+			if($model->validate()){
+				$model->user_password = sha1($_POST['User']['user_password']);
+				$model->save(false);
+				$loginform = new LoginForm;			
+				$loginform->username = $model->user_email;
+				$loginform->password = $_POST['User']['user_password'];
+				if($loginform->login()){
+					Yii::app()->user->setFlash('notif','Registrasi berhasil dilakukan dan anda telah masuk.');
+					$this->redirect(Yii::app()->user->returnUrl);
+				}
+			}
+			$model->unsetAttributes(array('verifyCode'));
+		}
+
+		$listKabupaten = ($model->kabupaten != null )? Lokasi::arrayKabupaten($model->provinsi): array(''=>'Pilih Provinsi dulu');
+		$listKecamatan = ($model->kecamatan != null )? Lokasi::arrayKecamatan($model->kabupaten): array(''=>'Pilih Kabupaten dulu');
+
+		$this->render('registrasi',array(
+			'model'=>$model,
+			'listKabupaten'=>$listKabupaten,
+			'listKecamatan'=>$listKecamatan,
+			));
 	}
 
 	/**
@@ -77,6 +103,7 @@ class SiteController extends Controller
 	 */
 	public function actionLogin()
 	{
+
 		if(!Yii::app()->user->isGuest)
 			$this->redirect(Yii::app()->user->returnUrl);
 		$this->layout = '//layouts/login';

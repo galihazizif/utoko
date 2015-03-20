@@ -15,7 +15,7 @@ class KategoriprodukController extends Controller
 	{
 		return array(
 			'accessControl', // perform access control for CRUD operations
-			'postOnly + delete', // we only allow deletion via POST request
+			// 'postOnly + delete', // we only allow deletion via POST request
 		);
 	}
 
@@ -110,7 +110,9 @@ class KategoriprodukController extends Controller
 	 */
 	public function actionDelete($id)
 	{
+		$id = isset($_GET['id'])? $_GET['id'] : '';
 		$this->loadModel($id)->delete();
+		Yii::app()->user->setFlash('notifSuccess','Item berhasil dihapus');
 
 		// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
 		if(!isset($_GET['ajax']))

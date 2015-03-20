@@ -21,12 +21,46 @@
  */
 class Transaksi extends CActiveRecord
 {
+	const STATUS_ADDED = 0;
+	const STATUS_APPROVED = 1;
+	const STATUS_PAYMENT_CONFIRMED = 2;
+	const STATUS_PAID = 3;
+	const STATUS_SENT = 4;
+	const STATUS_ABORTED = 9;
 	/**
 	 * @return string the associated database table name
 	 */
 	public function tableName()
 	{
 		return 'transaksi';
+	}
+
+	public function statusReadable(){
+		switch ($this->trans_status) {
+			case self::STATUS_ADDED:
+				$return = 'Menunggu Konfirmasi';
+				break;
+			case self::STATUS_APPROVED:
+				$return = 'Menunggu Pembayaran';
+				break;
+			case self::STATUS_PAYMENT_CONFIRMED:
+				$return = 'Validasi Pembayaran';
+				break;
+			case self::STATUS_PAID:
+				$return = 'Telah dibayar';
+				break;
+			case self::STATUS_SENT:
+				$return = 'Sudah Dikirim';
+				break;
+			case self::STATUS_ABORTED:
+				$return = 'Batal';
+				break;
+			
+			default:
+				$return = 'Error';
+				break;
+		}
+		return $return;
 	}
 
 	/**

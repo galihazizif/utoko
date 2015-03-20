@@ -33,7 +33,7 @@ class Atribut extends CActiveRecord
 			array('atribut_kategori, artribut_deskripsi, atribut_isi', 'required'),
 			array('atribut_kategori', 'length', 'max'=>3),
 			array('artribut_deskripsi', 'length', 'max'=>45),
-			array('atribut_isi', 'length', 'max'=>150),
+			array('atribut_isi', 'length', 'max'=>700),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
 			array('atribut_id, atribut_kategori, artribut_deskripsi, atribut_isi', 'safe', 'on'=>'search'),
@@ -59,9 +59,9 @@ class Atribut extends CActiveRecord
 	{
 		return array(
 			'atribut_id' => 'Atribut',
-			'atribut_kategori' => 'Atribut Kategori',
-			'artribut_deskripsi' => 'Artribut Deskripsi',
-			'atribut_isi' => 'Atribut Isi',
+			'atribut_kategori' => 'Kategori',
+			'artribut_deskripsi' => 'Deskripsi',
+			'atribut_isi' => 'Isi',
 		);
 	}
 

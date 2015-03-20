@@ -13,7 +13,7 @@ return array(
 	'defaultController'=>'front/index',
 
 	// preloading 'log' component
-	'preload'=>array('log'),
+	// 'preload'=>array('log'),
 
 	// autoloading model and component classes
 	'import'=>array(
@@ -70,28 +70,32 @@ return array(
 			'errorAction'=>'site/error',
 		),
 
-		'log'=>array(
-			'class'=>'CLogRouter',
-			'routes'=>array(
-				array(
-					'class'=>'CFileLogRoute',
-					'levels'=>'error, warning',
-				),
-				// uncomment the following to show log messages on web pages
-				/*
-				array(
-					'class'=>'CWebLogRoute',
-				),
-				*/
+		'cache'=>array(
+			'class'=>'system.caching.CFileCache'
 			),
-		),
+
+		// 'log'=>array(
+		// 	'class'=>'CLogRouter',
+		// 	'routes'=>array(
+		// 		array(
+		// 			'class'=>'CFileLogRoute',
+		// 			'levels'=>'error, warning',
+		// 		),
+		// 		// uncomment the following to show log messages on web pages
+		// 		/*
+		// 		array(
+		// 			'class'=>'CWebLogRoute',
+		// 		),
+		// 		*/
+		// 	),
+		// ),
 	),
 
 	// application-level parameters that can be accessed
 	// using Yii::app()->params['paramName']
 	'params'=>array(
 		// this is used in contact page
-		'adminEmail'=>'webmaster@example.com',
+		'adminEmail'=>'galihazizy@gmail.com',
 		'version'=>'0.3.1',
 	),
 );

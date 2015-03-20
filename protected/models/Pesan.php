@@ -17,6 +17,11 @@ class Pesan extends CActiveRecord
 	/**
 	 * @return string the associated database table name
 	 */
+
+	const STATUS_NEW = 0;
+	const STATUS_UNREAD = 1;
+	const STATUS_READ = 2;
+
 	public function tableName()
 	{
 		return 'pesan';
@@ -30,7 +35,7 @@ class Pesan extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('pesan_id, pesan_tanggal, pesan_judul, pesan_isi, pesan_status', 'required'),
+			array('pesan_judul, pesan_isi', 'required'),
 			array('pesan_id, pesan_origination, pesan_destination', 'numerical', 'integerOnly'=>true),
 			array('pesan_judul', 'length', 'max'=>150),
 			array('pesan_isi', 'length', 'max'=>500),
@@ -49,6 +54,7 @@ class Pesan extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
+			'pesanUser' => array(self::BELONGS_TO, 'User', 'pesan_origination'),
 		);
 	}
 

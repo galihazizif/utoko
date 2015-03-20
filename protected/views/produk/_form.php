@@ -22,13 +22,13 @@
 
 	<div class="form-group">
 		<?php echo $form->labelEx($model,'produk_nama'); ?>
-		<?php echo $form->textField($model,'produk_nama',array('size'=>60,'maxlength'=>70,'class'=>'form-control','placeholder'=>'Masukan nama produk')); ?>
+		<?php echo $form->textField($model,'produk_nama',array('size'=>60,'maxlength'=>70,'class'=>'form-control','placeholder'=>'Masukan nama produk (Maksimal 70 karakter)')); ?>
 		<?php echo $form->error($model,'produk_nama'); ?>
 	</div>
 
 	<div class="form-group">
 		<?php echo $form->labelEx($model,'produk_deskripsi'); ?>
-		<?php echo $form->textArea($model,'produk_deskripsi',array('size'=>60,'maxlength'=>700,'cols'=>'20','rows'=>'7','class'=>'form-control','placeholder'=>'Deskripsi mengenai produk secara lengkap')); ?>
+		<?php echo $form->textArea($model,'produk_deskripsi',array('size'=>60,'maxlength'=>700,'cols'=>'20','rows'=>'7','class'=>'form-control','placeholder'=>'Deskripsi produk (Maksimal 700 karakter)')); ?>
 		<?php echo $form->error($model,'produk_deskripsi'); ?>
 	</div>
 
@@ -78,6 +78,7 @@
 <br>
 	<div class="form-group">
 		<?php echo CHtml::submitButton('Simpan',array('class'=>'btn btn-primary')); ?>
+		<a class="btn btn-default tombol" href="<?php echo $this->createUrl('produk/admin');?>">Kembali</a>
 	</div>
 
 <?php $this->endWidget(); ?>

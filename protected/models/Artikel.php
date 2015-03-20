@@ -48,16 +48,20 @@ class Artikel extends CActiveRecord
 		);
 	}
 
+	public function previewIsi($num){
+		return substr($this->artikel_isi, 0,$num);
+	}
+
 	/**
 	 * @return array customized attribute labels (name=>label)
 	 */
 	public function attributeLabels()
 	{
 		return array(
-			'artikel_id' => 'Artikel',
-			'artikel_judul' => 'Artikel Judul',
-			'artikel_isi' => 'Artikel Isi',
-			'artikel_tanggal' => 'Artikel Tanggal',
+			'artikel_id' => 'ID',
+			'artikel_judul' => 'Judul',
+			'artikel_isi' => 'Isi',
+			'artikel_tanggal' => 'Tanggal',
 		);
 	}
 

@@ -3,13 +3,11 @@
 /* @var $model Produk */
 
 $this->breadcrumbs=array(
-	'Produks'=>array('index'),
-	'Manage',
+	'Kelola Produk',
 );
 
 $this->menu=array(
-	array('label'=>'List Produk', 'url'=>array('index')),
-	array('label'=>'Create Produk', 'url'=>array('create')),
+	array('label'=>'Tambah Produk', 'url'=>array('create')),
 );
 
 Yii::app()->clientScript->registerScript('search', "
@@ -38,7 +36,7 @@ Berikut ini daftar produk yang telah dimasukan
 	'dataProvider'=>$model->search(),
 	// 'filter'=>$model,
 	'htmlOptions'=>array('class'=>''),
-	'itemsCssClass'=>'table table-bordered table-condensed table-hover sidemenu',
+	'itemsCssClass'=>'table table-bordered table-condensed table-hover',
 	'summaryCssClass'=>'',
 	'enablePagination'=>true,
 	'pager'=>array(

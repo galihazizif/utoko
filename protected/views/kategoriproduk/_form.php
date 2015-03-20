@@ -15,18 +15,16 @@
 	'enableAjaxValidation'=>false,
 )); ?>
 
-	<p class="note">Fields with <span class="required">*</span> are required.</p>
 
-	<?php echo $form->errorSummary($model); ?>
-
-	<div class="row">
+	<div class="form-group">
 		<?php echo $form->labelEx($model,'katp_nama'); ?>
-		<?php echo $form->textField($model,'katp_nama',array('size'=>60,'maxlength'=>70)); ?>
+		<?php echo $form->textField($model,'katp_nama',array('size'=>60,'maxlength'=>70,'class'=>'form-control')); ?>
 		<?php echo $form->error($model,'katp_nama'); ?>
 	</div>
 
-	<div class="row buttons">
-		<?php echo CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save'); ?>
+	<div class="form-group">
+		<?php echo CHtml::submitButton('Simpan',array('class'=>'btn btn-primary')); ?>
+		<a class="btn btn-default tombol" href="<?php echo $this->createUrl('produk/admin');?>">Kembali</a>
 	</div>
 
 <?php $this->endWidget(); ?>

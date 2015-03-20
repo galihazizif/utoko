@@ -2,6 +2,7 @@
 
 class FrontController extends Controller
 {
+
 	public function actionCheckout()
 	{
 		$this->render('checkout');
@@ -15,12 +16,29 @@ class FrontController extends Controller
 
 	public function actionIndex()
 	{
+
+		$criteria = new CDbCriteria();
+		$criteria->order = "produk_id DESC";
+
+		if(isset($_GET['q'])){
+			$q = trim($_GET['q']);
+			$criteria->addSearchCondition('produk_nama',$q);
+			if($q == '')
+				$criteria->condition = 'produk_nama = \'\'';
+		}
+
 		$dataProvider = new CActiveDataProvider('Produk',
-			array('pagination'=>array(
-				'pageSize'=>6))
+			array(
+				'pagination'=>array(
+					'pageSize'=>6),
+				'criteria'=>$criteria,
+				)
 			);
+
 		
-		$this->render('index',array('dataProvider'=>$dataProvider));
+		$this->render('index',array(
+			'dataProvider'=>$dataProvider,
+			));
 	}
 
 	public function actionKeranjang()

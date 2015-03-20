@@ -226,8 +226,17 @@ class ProdukController extends Controller
 	}
 
 	public function actionDetail(){
+		if(!isset($_GET['id']))
+			throw new CHttpException(404,"Error Processing Request");
+			
 		$this->layout = '/layouts/detail';
 		$komentar = new Komentar;
+		$criteria = new CDbCriteria();
+		$jmlKomentar = Komentar::model()->count($criteria);
+		$pagination = new CPagination($jmlKomentar);
+		$pagination->pageSize = 5;
+		$pagination->applyLimit($criteria);
+		$komentarExist = Komentar::model()->findAll($criteria);
 		$model = Produk::model()->findByPk((int)$_GET['id']);
 		if($model == null){
 			throw new CHttpException(404,"Produk tidak ditemukan");
@@ -247,6 +256,8 @@ class ProdukController extends Controller
 		$this->render('detail',array(
 			'model'=>$model,
 			'komentar'=>$komentar,
+			'komentarExist'=>$komentarExist,
+			'pagination'=>$pagination,
 			));
 	}
 }

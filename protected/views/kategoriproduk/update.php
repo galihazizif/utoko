@@ -3,19 +3,16 @@
 /* @var $model Kategoriproduk */
 
 $this->breadcrumbs=array(
-	'Kategoriproduks'=>array('index'),
-	$model->katp_id=>array('view','id'=>$model->katp_id),
+	'Kelola Kategori Produk'=>array('admin'),
+	$model->katp_nama=>array('view','id'=>$model->katp_id),
 	'Update',
 );
 
 $this->menu=array(
-	array('label'=>'List Kategoriproduk', 'url'=>array('index')),
-	array('label'=>'Create Kategoriproduk', 'url'=>array('create')),
-	array('label'=>'View Kategoriproduk', 'url'=>array('view', 'id'=>$model->katp_id)),
-	array('label'=>'Manage Kategoriproduk', 'url'=>array('admin')),
+	array('label'=>'Kelola Kategori Produk', 'url'=>array('admin')),
 );
 ?>
 
-<h1>Update Kategoriproduk <?php echo $model->katp_id; ?></h1>
+<h3>Ubah <?php echo $model->katp_nama; ?></h3>
 
 <?php $this->renderPartial('_form', array('model'=>$model)); ?>
