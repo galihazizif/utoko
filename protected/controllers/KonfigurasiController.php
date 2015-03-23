@@ -15,11 +15,11 @@ class KonfigurasiController extends Controller
 	public function accessRules()
 	{
 		return array(
-			array('allow', // allow authenticated user to perform 'create' and 'update' actions
+			array('allow', 
 				'actions'=>array('overridestyle'),
 				'users'=>array('*'),
 				),
-			array('allow', // allow authenticated user to perform 'create' and 'update' actions
+			array('allow', 
 				'actions'=>array('warna',
 					'index',
 					'text',
@@ -31,10 +31,11 @@ class KonfigurasiController extends Controller
 					'editatribut',
 					'konfirmasipengiriman',
 					'createatribut',
-					'deleteatribut'),
+					'deleteatribut',
+					'invoice'),
 				'expression'=>'$user->isAdmin()',
 				),
-			array('deny',  // deny all users
+			array('deny',  
 				'users'=>array('*'),
 				),
 			);
@@ -43,7 +44,7 @@ class KonfigurasiController extends Controller
 
 	function actionIndex(){
 		$rekening = Atribut::model()->findAll('atribut_kategori = ?',array(2));
-		// Yii::app()->cache->delete('text');
+		
 		if(Yii::app()->cache->get('text')===false){
 			$textObj = Atribut::model()->findAll('atribut_kategori = ?',array(3));
 			foreach($textObj as $row){
@@ -61,8 +62,9 @@ class KonfigurasiController extends Controller
 	function actionEditAtribut(){
 		$id = isset($_GET['id'])? $_GET['id'] : '0';
 		$atribut = Atribut::model()->findByPk($id);
-		if($atribut == null)
+		if($atribut == null){
 			throw new CHttpException(404,"Atribut tidak ditemukan");
+		}
 		if(isset($_POST['Atribut'])){
 			$atribut->atribut_isi = $_POST['Atribut']['atribut_isi'];
 			if($atribut->save()){
@@ -81,8 +83,9 @@ class KonfigurasiController extends Controller
 		$id = isset($_GET['kategori'])? $_GET['kategori'] : '0';
 		$atribut = new Atribut;
 		$kategori = Kategoriatribut::model()->findByPk($id);
-		if($kategori == null)
+		if($kategori == null){
 			throw new CHttpException(404,"Kategori tidak ditemukan");
+		}
 		if(isset($_POST['Atribut'])){
 			$atribut->attributes = $_POST['Atribut'];
 			$atribut->atribut_kategori = $_GET['kategori'];
@@ -101,9 +104,9 @@ class KonfigurasiController extends Controller
 	public function actionDeleteAtribut(){
 		$id = isset($_GET['id'])? $_GET['id'] : '0';
 		$atribut = Atribut::model()->findByPk($id);
-		if($atribut->atribut_kategori != 2) // kodeatribut 2 itu bank
+		if($atribut->atribut_kategori != 2){ /* kodeatribut 2 itu bank*/
 			throw new CHttpException(404,"Eits, jangan nakal");
-
+		}
 		$atribut->delete();
 		Yii::app()->user->setFlash('notifSuccess','Berhasil dihapus');
 		$this->redirect(array('konfigurasi/index'));
@@ -134,8 +137,8 @@ class KonfigurasiController extends Controller
 				}
 
 				Yii::app()->cache->delete('cssOverride');
-				// Yii::app()->cache->delete('cssOverride');
-				// Yii::app()->cache->flush();
+				/* Yii::app()->cache->delete('cssOverride');
+				 Yii::app()->cache->flush();*/
 				
 			}
 
@@ -175,6 +178,14 @@ class KonfigurasiController extends Controller
 				'#visitorsidebar'=>array(
 					'border-right'=>'4px solid'.$cusArray[Styler::FOOTERLISTCOLOR],
 					'border-top'=>'4px solid'.$cusArray[Styler::FOOTERLISTCOLOR],
+					),
+				'.msg-viewer'=>array(
+					'border-top'=>'4px solid'.$cusArray[Styler::FOOTERLISTCOLOR],
+					'border-right'=>'4px solid'.$cusArray[Styler::FOOTERLISTCOLOR],
+					),
+				'.msg-list-container'=>array(
+					'border-top'=>'4px solid'.$cusArray[Styler::FOOTERLISTCOLOR],
+					'border-left'=>'4px solid'.$cusArray[Styler::FOOTERLISTCOLOR],
 					),
 				);
 
@@ -223,8 +234,9 @@ class KonfigurasiController extends Controller
 	{
 		$idtrans = $_GET['kodetrans'];
 		$model = Transaksi::model()->findAll('trans_kodetrans = :kodetrans',array(':kodetrans'=>$idtrans));
-		if($model == null)
+		if($model == null){
 			throw new CHttpException(404,"Transaksi tidak ditemukan");
+		}
 			
 		$this->render('transaksidetail',
 			array(
@@ -232,12 +244,35 @@ class KonfigurasiController extends Controller
 				));
 	}
 
+	public function showInvoice($idtrans)
+	{
+		$model = Transaksi::model()->findAll('trans_kodetrans = :kodetrans',array(':kodetrans'=>$idtrans));
+		if($model == null){
+			throw new CHttpException(404,"Transaksi tidak ditemukan");
+		}
+
+		$daftarRekening = Atribut::model()->findAll('atribut_kategori = 2');
+		foreach ($daftarRekening as $value) {
+			$rekening[$value->atribut_id] = $value->artribut_deskripsi.' '.$value->atribut_isi;
+		
+		}
+			
+		$invoice = $this->renderPartial('invoice',
+			array(
+				'model'=>$model,
+				'rekening'=>($daftarRekening != null)?$rekening:array(null,'Belum Ada Rekening'),
+				),true);
+
+		return $invoice;
+	}
+
 	public function actionTransaksiApprove()
 	{
 		$idtrans = $_GET['kodetrans'];
 		$model = Transaksi::model()->findAll('trans_kodetrans = :kodetrans',array(':kodetrans'=>$idtrans));
-		if($model == null)
+		if($model == null){
 			throw new CHttpException(404,"Transaksi tidak ditemukan");
+		}
 
 		if(isset($_POST['Transaksi'])){
 			$criteria = new CDbCriteria;
@@ -248,7 +283,30 @@ class KonfigurasiController extends Controller
 				),$criteria);
 			if($updated > 0){
 				Yii::app()->user->setFlash('notifSuccess','Transaksi berhasil diproses');
-				$this->redirect(array('konfigurasi/transaksi'));
+
+				$pesan = new Pesan;
+				$pesan->pesan_tanggal = date('Y-m-d H:i:s');
+				$pesan->pesan_origination = Yii::app()->user->id['user_id'];
+				$pesan->pesan_destination = $model[0]->trans_user;
+				$pesan->pesan_judul = "Silahkan lakukan pembayaran (".$model[0]->trans_kodetrans.").";
+				$pesan->pesan_isi = "Yth. ".$model[0]->transUser->user_nama.", produk yang anda pesan tersedia, silahkan lakukan pembayaran terkait dengan produk yang anda pesan ";
+				$pesan->pesan_isi.= " via Bank Transfer. Kami telah mengirimkan rincian pesanan dan nomor rekening bank kami melalui email,";
+				$pesan->pesan_isi.= " atau anda dapat melihat rincian pesasan melalui tautan berikut ini <a href='".$this->createUrl('pengaturan/transaksidetail',array('kodetrans'=>$model[0]->trans_kodetrans))."'>Klik disini</a>";
+				
+				$pesan->pesan_status = Pesan::STATUS_NEW;
+				if(!$pesan->save()){
+					print_r($pesan->errors);
+				}
+
+
+				$mail = new SendMail();
+				$mail->destination = array(Yii::app()->params['adminEmail']);
+				$mail->subject = $pesan->pesan_judul;
+				$mail->body = $this->showInvoice($idtrans);
+				$mail->kirim();
+
+
+				$this->redirect(array('konfigurasi/transaksi',array('kodetrans'=>$idtrans)));
 			}
 			else{
 				Yii::app()->user->setFlash('notifError','Transaksi GAGAL diproses');
@@ -296,8 +354,9 @@ class KonfigurasiController extends Controller
 	{
 		$idtrans = $_GET['kodetrans'];
 		$model = Transaksi::model()->findAll('trans_kodetrans = :kodetrans AND trans_status = :status',array(':kodetrans'=>$idtrans,':status'=>Transaksi::STATUS_ADDED));
-		if($model == null)
+		if($model == null){
 			throw new CHttpException(404,"Transaksi tidak ditemukan");
+		}
 
 		if(isset($_POST['Transaksi'])){
 			$criteria = new CDbCriteria;
@@ -327,9 +386,9 @@ class KonfigurasiController extends Controller
 	{
 		$idtrans = $_GET['kodetrans'];
 		$model = Transaksi::model()->findAll('trans_kodetrans = :kodetrans',array(':kodetrans'=>$idtrans));
-		if($model == null)
+		if($model == null){
 			throw new CHttpException(404,"Transaksi tidak ditemukan");
-
+		}
 		 Transaksi::model()->updateAll(array(
 				'trans_status'=>Transaksi::STATUS_PAID,
 				'trans_keterangan'=>'Pembayaran telah diterima dan pesanan akan segera dikirimkan',

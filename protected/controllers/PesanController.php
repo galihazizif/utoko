@@ -19,7 +19,8 @@ class PesanController extends Controller
 				'actions'=>array('warna',
 					'list',
 					'detail',
-					'create',
+					'balas',
+					'delete',
 					),
 				'expression'=>'$user->isAdmin() || $user->isVisitor()',
 				),
@@ -28,10 +29,24 @@ class PesanController extends Controller
 				),
 			);
 	}
-	public function actionCreate()
+	public function actionBalas()
 	{
-		$this->render('create');
+		if(isset($_POST['Pesan'])){
+			$model = new Pesan;
+			$model->attributes = $_POST['Pesan'];
+			$model->pesan_tanggal = date('Y-m-d H:i:s');
+			$model->pesan_origination = Yii::app()->user->id['user_id'];
+			$model->pesan_status = Pesan::STATUS_NEW;
+			header('Content-type: text/json');
+			if($model->save()){
+				echo json_encode(array('status'=>'OK'));
+			}
+			else
+				echo json_encode(array('status'=>'ERROR'));
+		}
+
 	}
+
 
 	public function actionDetail()
 	{
@@ -45,6 +60,7 @@ class PesanController extends Controller
 		$pesan = array(
 			'pesan_id'=>$model->pesan_id,
 			'pesan_origination'=>$model->pesanUser->user_nama,
+			'pesan_origination_id'=>$model->pesan_origination,
 			'pesan_tanggal'=>TextHelper::tanggal($model->pesan_tanggal),
 			'pesan_judul'=>$model->pesan_judul,
 			'pesan_isi'=>$model->pesan_isi,
@@ -60,11 +76,24 @@ class PesanController extends Controller
 		}
 	}
 
+	public function actionDelete(){
+		$model = Pesan::model()->find('pesan_id = :id AND pesan_destination = :dest',
+			array(
+				':id'=> $_GET['id'],
+				':dest'=> Yii::app()->user->id['user_id'],
+				)
+			);
+		if($model->delete())
+			echo json_encode(array('status'=>'OK'));
+
+	}
+
 	public function actionList()
 	{
-		$this->layout = (Yii::app()->user->isAdmin()) ? '/layouts/dashboard': 'layouts/pengaturan';
+		$this->layout = (Yii::app()->user->isAdmin()) ? '/layouts/dashboard': '/layouts/pengaturan';
 		$criteria = new CDbCriteria;
 		$criteria->condition = "pesan_destination = ".Yii::app()->user->id['user_id'];
+		$criteria->order = "pesan_id DESC";
 		$pesan = Pesan::model()->findAll($criteria);
 		$this->render('list',array('pesan'=>$pesan));
 	}

@@ -132,3 +132,42 @@ body{
 			border: solid 3px gray;
 
 		}
+
+/*copied from dashboard*/
+.msg-list-container{
+    border: solid 1px #b4b4b4;
+    height: 500px;
+    overflow-y: scroll;
+  }
+
+  .msg-list-item{
+    height: 65px;
+    background: #d0fd55;
+    border-bottom: solid #ddd0d0 1px;
+  }
+
+  .msg-list-item p{
+    padding: 3px;
+  }
+
+  .read{
+    background: #ffffff;
+  }
+
+  .msg-list-container .active{
+      background: #4c8ccc;
+      color: white;
+  }
+
+  .msg-list-item:hover{
+    cursor: pointer;
+    color: white;
+    background: #4c85c3;
+  }
+
+  .msg-viewer{
+    height: 500px;
+    border: solid 1px #b4b4b4;
+    background: #ffffff;
+    overflow-y: auto;
+  }

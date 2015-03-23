@@ -69,7 +69,29 @@ class PengaturanController extends Controller
 					'trans_keterangan'=>$model->tanggal.' Tujuan pembayaran '.$rekening[$model->norektujuan].', pengirim '.$model->namarekasal.' ('.$model->norekasal.') Rp.'.$model->nominal,
 					),'trans_kodetrans = ? AND trans_status = ?',
 					array($transaksi[0]->trans_kodetrans,Transaksi::STATUS_APPROVED));
-				Yii::app()->user->setFlash('notif','Konfirmasi pembayaran telah dikirim');
+
+				$pesan = new Pesan;
+				$pesan->pesan_tanggal = date('Y-m-d H:i:s');
+				$pesan->pesan_origination = Yii::app()->user->id['user_id'];
+				$pesan->pesan_destination = 0;
+				$pesan->pesan_judul = "Konfirmasi pembayaran ".$transaksi[0]->trans_kodetrans." oleh ".$transaksi[0]->transUser->user_nama;
+				$pesan->pesan_isi = $transaksi[0]->transUser->user_nama." melakukan konfirmasi pembayaran terhadap pesanan dengan kode transaksi ".$transaksi[0]->trans_kodetrans.".";
+				$pesan->pesan_isi.= " Pembayaran dilakukan kepada ".$rekening[$model->norektujuan]." pada ".$model->tanggal." dengan jumlah pembayaran sebesar ".TextHelper::rawToRupiah($model->nominal);
+				$pesan->pesan_isi.= " melalui ".$model->norekasal.' a/n '.$model->namarekasal.'.';
+				$pesan->pesan_isi.= " Silahkan proses pesanan ini dengan menekan tombol berikut ini <a href='".$this->createAbsoluteUrl('konfigurasi/transaksidetail',array('kodetrans'=>$transaksi[0]->trans_kodetrans))."''>Klik disini</a>";
+				$pesan->pesan_status = Pesan::STATUS_NEW;
+				if(!$pesan->save()){
+					print_r($pesan->errors);
+				}
+
+
+				$mail = new SendMail();
+				$mail->destination = array(Yii::app()->params['adminEmail']);
+				$mail->subject = $pesan->pesan_judul;
+				$mail->body = $pesan->pesan_isi;
+				$mail->kirim();
+
+				Yii::app()->user->setFlash('notif','Konfirmasi pembayaran telah dikirim, mohon untuk menunggu selagi kami melakukan validasi terhadap konfirmasi pembayaran anda. Terimakasih.');
 				$this->redirect($this->createUrl('pengaturan/transaksidetail',array('kodetrans'=>$transaksi[0]->trans_kodetrans)));
 			}
 		}
@@ -123,6 +145,7 @@ class PengaturanController extends Controller
 				'user'=>$user,
 				));
 	}
+
 
 	// Uncomment the following methods and override them if needed
 	/*

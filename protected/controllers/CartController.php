@@ -116,9 +116,8 @@ class CartController extends Controller
 			$mail->destination = array(Yii::app()->params['adminEmail']);
 			$mail->subject = $modelUser->user_nama." melakukan pemesanan produk";
 			$mail->body = $modelUser->user_nama."&lt;".$modelUser->user_email."&gt;"." &lt;".$modelUser->user_telepon."&gt; ".
-							" melakukan pemesanan produk pada toko online anda, silahkan periksa ketersediaan barang. 
-							Kemudian segera lakukan konfirmasi kepada pemesan apabila barang tersedia, konfirmasi
-							dapat dilakukan melalui tautan ini <a href=\"".$this->createAbsoluteUrl('konfigurasi/transaksi')."\">Klik disini.</a>";
+							" melakukan pemesanan produk pada toko online anda, silahkan periksa rincian pesanan dan lakukan konfirmasi
+							melalui tautan ini <a href=\"".$this->createAbsoluteUrl('konfigurasi/transaksidetail',array('kodetrans'=>$kodetrans))."\">Klik disini.</a>";
 			$mail->kirim();
 
 			$pesan = new Pesan;
@@ -130,7 +129,6 @@ class CartController extends Controller
 			$pesan->pesan_status = Pesan::STATUS_NEW;
 			if(!$pesan->save()){
 				print_r($pesan->errors);
-				exit();
 			}
 
 			$trans->commit();
@@ -186,6 +184,9 @@ class CartController extends Controller
 		Yii::app()->cache->delete('cart'.$this->cookieId);
 		$produkId 	= (int)$_GET['id'];
 		$qty 		= (int)$_GET['qty'];
+		if($qty < 1)
+			throw new CHttpException(500,"Minimal pembelian adalah 1 kuantitas");
+			
 		$model 		= new Keranjang();
 		$model->keranjang_produk 	= $produkId;
 		$model->keranjang_qty 		= $qty;

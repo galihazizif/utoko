@@ -33,7 +33,7 @@
 			<div class="col-md-3">
 				<?php $this->renderPartial('/layouts/_sidebar_pengaturan_visitor');?>
 			</div>	
-			<div class="col-md-8">
+			<div class="col-md-9">
 			 <?php
               if(isset($this->breadcrumbs)){
                 $this->widget('zii.widgets.CBreadcrumbs', array(
